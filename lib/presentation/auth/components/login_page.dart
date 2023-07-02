@@ -11,9 +11,7 @@ class LoginForm extends StatefulWidget {
 
   const LoginForm({
     Key? key,
-
-  })  :
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -31,7 +29,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
+          const Center(
             child: Text('Login'),
           ),
           TextFormField(
@@ -63,18 +61,22 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                BlocProvider.of<AuthBloc>(context).add(LoginEvent(
-                    signinData: SignInModel(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    ),
-                    authRepository: RepositoryProvider.of<Repository>(context)));
-              }
-            },
-            child: Text('Login'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  BlocProvider.of<AuthBloc>(context).add(LoginEvent(
+                      signinData: SignInModel(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ),
+                      authRepository:
+                          RepositoryProvider.of<Repository>(context)));
+                }
+              },
+              child: const Text('Login'),
+            ),
           ),
         ],
       ),

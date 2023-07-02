@@ -28,8 +28,9 @@ class LoginEvent extends AuthEvent {
       if (data == null) {
         yield ErrorAuthtState(
             'An error occured while performing operation'.toString());
+      } else {
+        yield AuthDoneState(data);
       }
-      yield AuthDoneState(data);
     } catch (_, stackTrace) {
       developer.log('$_', name: 'LoginEvent', error: _, stackTrace: stackTrace);
       yield ErrorAuthtState(_.toString());
@@ -55,8 +56,9 @@ class RegisterEvent extends AuthEvent {
       if (data == null) {
         yield ErrorAuthtState(
             'An error occured while performing operation'.toString());
+      } else {
+        yield AuthDoneState(data);
       }
-      yield AuthDoneState(data);
     } catch (_, stackTrace) {
       developer.log('$_', name: 'RegEvent', error: _, stackTrace: stackTrace);
       yield ErrorAuthtState(_.toString());

@@ -17,7 +17,6 @@ class Provider {
           Uri.parse('${Constants.BASE_URL}${Constants.endPoints['login']}'),
           body: signInData.toMap());
       UserModel data = UserModel.fromJson(json.decode(response.body));
-      saveToken(data);
       return checkCodesAndReturnSuit(data: data, response: response);
     } catch (e, s) {
       developer.log(e.toString(), stackTrace: s, name: 'Login Error');
@@ -31,7 +30,6 @@ class Provider {
           Uri.parse('${Constants.BASE_URL}${Constants.endPoints['reg']}'),
           body: signUpData.toMap());
       UserModel data = UserModel.fromJson(json.decode(response.body));
-      saveToken(data);
       return checkCodesAndReturnSuit(data: data, response: response);
     } catch (e, s) {
       developer.log(e.toString(), stackTrace: s, name: 'Registration Error');
@@ -74,12 +72,13 @@ class Provider {
     switch (response.statusCode) {
       case 201:
         showMessage(msg: '201');
+        saveToken(data);
         return data;
       case 401:
         showMessage(msg: '401');
         return null;
       default:
-        showMessage(msg: 'unknown error');
+        showMessage(msg: 'Unknown status C0^3');
         return null;
     }
   }

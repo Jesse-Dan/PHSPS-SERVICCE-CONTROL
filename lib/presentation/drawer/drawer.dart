@@ -34,6 +34,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         children: [
           /// Pretty similar to the BottomNavigationBar!
           SideNavigationBar(
+            toggler: const SideBarToggler(
+              shrinkIcon: Icons.arrow_right_rounded,
+              expandIcon: Icons.arrow_left_rounded,
+            ),
+            initiallyExpanded: false,
             selectedIndex: selectedIndex,
             header: const SideNavigationBarHeader(
                 image: Icon(Icons.admin_panel_settings_rounded),

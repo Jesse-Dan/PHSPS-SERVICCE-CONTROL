@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phsps_api_work/logic/bloc/index.dart';
@@ -90,19 +92,22 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                BlocProvider.of<AuthBloc>(context).add(RegisterEvent(
-                    signUpData: SignUpModel(
-                        name: _nameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        confirmPassword: _confirmPasswordController.text),
-                    authRepository:RepositoryProvider.of(context)));
-              }
-            },
-            child: const Text('Register'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  BlocProvider.of<AuthBloc>(context).add(RegisterEvent(
+                      signUpData: SignUpModel(
+                          name: _nameController.text,
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          confirmPassword: _confirmPasswordController.text),
+                      authRepository:RepositoryProvider.of(context)));
+                }
+              },
+              child: const Text('Register'),
+            ),
           ),
         ],
       ),
