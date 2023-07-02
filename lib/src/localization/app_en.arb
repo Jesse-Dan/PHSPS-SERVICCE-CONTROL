@@ -1,0 +1,6 @@
+{
+  "appTitle": "phsps_api_work",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
