@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phsps_api_work/logic/bloc/home_page_bloc/home_bloc.dart';
+import 'package:phsps_api_work/logic/bloc/home_page_bloc/home_event.dart';
+import 'package:phsps_api_work/logic/repository/repository.dart';
 import 'package:phsps_api_work/presentation/settings/settings_view.dart';
 import 'package:side_navigation/side_navigation.dart';
 
@@ -34,10 +38,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         children: [
           /// Pretty similar to the BottomNavigationBar!
           SideNavigationBar(
-            toggler: const SideBarToggler(
-              shrinkIcon: Icons.arrow_right_rounded,
-              expandIcon: Icons.arrow_left_rounded,
-            ),
+            toggler: SideBarToggler(
+                shrinkIcon: Icons.arrow_right_rounded,
+                expandIcon: Icons.arrow_left_rounded,
+                onToggle: () => BlocProvider.of<HomeBloc>(context).add(
+                    LoadMainEvent(RepositoryProvider.of<Repository>(context)))),
             initiallyExpanded: false,
             selectedIndex: selectedIndex,
             header: const SideNavigationBarHeader(
@@ -57,12 +62,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 icon: Icons.settings,
                 label: 'Settings',
               ),
+              SideNavigationBarItem(
+                icon: Icons.logout,
+                label: 'Logout',
+              ),
             ],
             onTap: (index) {
               setState(() {
                 selectedIndex = index;
               });
             },
+            footer: const SideNavigationBarFooter(label: Text('Logout')),
           ),
 
           /// Make it take the rest of the available width

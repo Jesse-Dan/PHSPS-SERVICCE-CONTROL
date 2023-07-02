@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors_in_immutables
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -10,7 +10,6 @@ class SignInModel extends Equatable {
   SignInModel({required this.email,required this.password});
   
   @override
-  // TODO: implement props
   List<Object?> get props => [email,password];
 
   Map<String, dynamic> toMap() {

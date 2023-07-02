@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as fetcher;
 import 'dart:developer' as developer;
+
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as fetcher;
+
 import 'package:phsps_api_work/global/constants.dart';
 import 'package:phsps_api_work/logic/db/local_db.dart';
 import 'package:phsps_api_work/model/sign_in_model.dart';
 import 'package:phsps_api_work/model/sign_up_model.dart';
+
 import '../../model/dashboard_data_model.dart';
 import '../../model/user_model.dart';
 
@@ -54,6 +58,73 @@ class Provider {
       return data;
     } catch (e, s) {
       developer.log(e.toString(), stackTrace: s, name: 'Load Data Error');
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> searchData(
+      {required String businessName}) async {
+    try {
+      var url =
+          Uri.parse('${Constants.BASE_URL}${Constants.endPoints['search']}');
+      var headers = {
+        'Authorization': 'Bearer ${await getToken()}',
+        'Content-Type': 'application/json'
+      };
+      var response = await fetcher.get(url, headers: headers);
+      showMessage(msg: 'Response Code: ${response.statusCode}');
+      showMessage(msg: 'Response Uri: ${response.request?.url}');
+      showMessage(msg: response.body.toString());
+      List<CustomerDataModel> data =
+          dashBoardDataModelFromJson((response.body));
+      return data;
+    } catch (e, s) {
+      developer.log(e.toString(),
+          stackTrace: s, name: 'Search By Business Data Error');
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> monthsSearch({required String month}) async {
+    try {
+      var url = Uri.parse(
+          '${Constants.BASE_URL}${Constants.endPoints['get_monthly_subs']}');
+      var headers = {
+        'Authorization': 'Bearer ${await getToken()}',
+        'Content-Type': 'application/json'
+      };
+      var response = await fetcher.get(url, headers: headers);
+      showMessage(msg: 'Response Code: ${response.statusCode}');
+      showMessage(msg: 'Response Uri: ${response.request?.url}');
+      showMessage(msg: response.body.toString());
+      List<CustomerDataModel> data =
+          dashBoardDataModelFromJson((response.body));
+      return data;
+    } catch (e, s) {
+      developer.log(e.toString(),
+          stackTrace: s, name: 'Search By Business Data Error');
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> sumsSearch({required String month}) async {
+    try {
+      var url = Uri.parse(
+          '${Constants.BASE_URL}${Constants.endPoints['get_total_monthly_subs_annully']}');
+      var headers = {
+        'Authorization': 'Bearer ${await getToken()}',
+        'Content-Type': 'application/json'
+      };
+      var response = await fetcher.get(url, headers: headers);
+      showMessage(msg: 'Response Code: ${response.statusCode}');
+      showMessage(msg: 'Response Uri: ${response.request?.url}');
+      showMessage(msg: response.body.toString());
+      List<CustomerDataModel> data =
+          dashBoardDataModelFromJson((response.body));
+      return data;
+    } catch (e, s) {
+      developer.log(e.toString(),
+          stackTrace: s, name: 'Search By Business Data Error');
       return null;
     }
   }

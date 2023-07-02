@@ -4,7 +4,7 @@ import 'package:phsps_api_work/global/constants.dart';
 import 'package:phsps_api_work/logic/bloc/index.dart';
 import 'package:phsps_api_work/presentation/auth/components/login_page.dart';
 import 'package:phsps_api_work/presentation/auth/components/reg_page.dart';
-import 'package:phsps_api_work/presentation/widgets/alert_dialogue.dart';
+import 'package:phsps_api_work/presentation/widgets/overlay_manager.dart';
 import '../../drawer/drawer.dart';
 
 class AuthtScreen extends StatefulWidget {
@@ -37,31 +37,28 @@ class AuthtScreenState extends State<AuthtScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-      if (state is ErrorAuthtState) {
-        showDialog(
-          context: context,
-          builder: (context) => ReusableAlertDialog(
-            autoImplyActions: true,
-            title: 'Authorization Error',
-            content: state.errorMessage,
-            onDone: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          ),
-        );
+      if (state is AuthLoadingState) {
+        OverlayService.showLoading(
+            child: const Center(child: CircularProgressIndicator()));
       }
 
-      if (state is! ErrorAuthtState) {
-        showDialog(
-          context: context,
-          builder: (context) => const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+      if (state is! AuthLoadingState) {
+        OverlayService.closeToasts();
       }
+
+      if (state is ErrorAuthtState) {
+        OverlayService.closeToasts();
+        OverlayService.showToast(
+            onDone: () {
+              OverlayService.cancelFunc!.call();
+            },
+            onCancel: () {
+              OverlayService.cancelFunc!.call();
+            },
+            title: 'Autorization Error',
+            content: state.errorMessage);
+      }
+
       if (state is AuthDoneState) {
         Navigator.pushNamed(context, DrawerWidget.routeName);
       }

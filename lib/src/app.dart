@@ -1,3 +1,4 @@
+import 'package:alert_system/systems/initializer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,6 +41,8 @@ class MyApp extends StatelessWidget {
           animation: settingsController,
           builder: (BuildContext context, Widget? child) {
             return MaterialApp(
+              builder: OverlayManagerInit.builder,
+              navigatorObservers: [OverlayManagerInit.navigatorObserver],
               restorationScopeId: 'app',
               localizationsDelegates: const [
                 AppLocalizations.delegate,
@@ -65,7 +68,9 @@ class MyApp extends StatelessWidget {
                       case SettingsView.routeName:
                         return SettingsView(controller: settingsController);
                       case DrawerWidget.routeName:
-                        return  DrawerWidget(controller: settingsController,);
+                        return DrawerWidget(
+                          controller: settingsController,
+                        );
                       default:
                         return const AuthPage();
                     }

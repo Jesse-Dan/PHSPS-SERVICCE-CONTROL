@@ -12,7 +12,7 @@ class TableWidget extends StatefulWidget {
   final Widget? child;
 
   final int? searchIndex;
-  TableWidget(
+  const TableWidget(
       {super.key,
       this.row,
       this.actions,

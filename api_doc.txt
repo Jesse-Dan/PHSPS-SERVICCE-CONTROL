@@ -1,6 +1,6 @@
 PHSPS Customer/Client List API
 
-https://api1.phsps.com/api/customer
+https://api1.phsps.com/api
 
 
 Routes(Protected)

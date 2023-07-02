@@ -10,7 +10,9 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  alert_system: ^0.0.4
   bloc: ^8.1.2
+  bot_toast: ^4.0.4
   equatable: ^2.0.5
   firebase_core: ^2.14.0
   flutter:

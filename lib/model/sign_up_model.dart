@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors_in_immutables
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -17,7 +17,6 @@ class SignUpModel extends Equatable {
       required this.confirmPassword});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [name, email, password, confirmPassword];
 
   Map<String, dynamic> toMap() {
