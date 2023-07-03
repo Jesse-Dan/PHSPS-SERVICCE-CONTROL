@@ -22,9 +22,9 @@ class Repository {
     }
   }
 
-  Future<UserModel?> login({required SignInModel signinData}) async {
+  Future<UserModel?> login({SignInModel? signinData}) async {
     try {
-      var data = await authProvider.login(signInData: signinData);
+      var data = await authProvider.login(signInData: signinData!);
       showMessage(msg: data!.user!.email.toString());
       return data;
     } catch (e) {
@@ -35,7 +35,51 @@ class Repository {
 
   Future<List<CustomerDataModel>?> fetchData() async {
     try {
-      var data = await authProvider.fetchData();
+      var data = await authProvider.fetchAllCustumersData();
+      showMessage(msg: data.toString());
+      return data;
+    } catch (e) {
+      showMessage(msg: e.toString());
+      return null;
+    }
+  }
+
+ Future<CustomerDataModel?> fetchSingelDataData({String? query}) async {
+    try {
+      var data = await authProvider.fetchSingleCustumersData(query: query);
+      showMessage(msg: data.toString());
+      return data;
+    } catch (e) {
+      showMessage(msg: e.toString());
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> searchData({String? query}) async {
+    try {
+      var data = await authProvider.searchData(businessName: query);
+      showMessage(msg: data.toString());
+      return data;
+    } catch (e) {
+      showMessage(msg: e.toString());
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> searchMonthData() async {
+    try {
+      var data = await authProvider.fetchAllCustumersData();
+      showMessage(msg: data.toString());
+      return data;
+    } catch (e) {
+      showMessage(msg: e.toString());
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> searchSumData() async {
+    try {
+      var data = await authProvider.fetchAllCustumersData();
       showMessage(msg: data.toString());
       return data;
     } catch (e) {

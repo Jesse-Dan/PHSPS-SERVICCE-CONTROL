@@ -16,42 +16,43 @@ class ReusableAlertDialog extends StatelessWidget {
   final List<Widget>? actions;
 
   ReusableAlertDialog({
-    super.key,
+    Key? key,
     required this.title,
-    required this.content,
-    required this.onDone,
-    required this.onCancel,
-    required this.child,
-    required this.autoImplyActions,
-    required this.actions,
-    required this.onDoneText,
-    required this.onCancelText,
+    this.content,
+    this.onDone,
+    this.onCancel,
+    this.child,
+    this.autoImplyActions = false,
+    this.actions,
+    this.onDoneText,
+    this.onCancelText,
   }) {
     if (autoImplyActions && actions != null) {
       throw Exception(
-          'can\'t use autoImplyActions and actions together, if autoImplyActions is true actions must be null');
-    } else if (child != null && content!.isNotEmpty) {
+          'Cannot use autoImplyActions and actions together. If autoImplyActions is true, actions must be null.');
+    } else if (child != null && content != null && content!.isNotEmpty) {
       throw Exception(
-          'can\'t use child and content together, if child is not null content must be [content = '
-          ']');
+          'Cannot use child and content together. If child is not null, content must be null or empty.');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text(title),
-        content: child ?? Text(content ?? ''),
-        actions: autoImplyActions
-            ? <Widget>[
-                TextButton(
-                  onPressed: onCancel ?? () {},
-                  child: Text(onCancelText ?? 'Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: onDone ?? () {},
-                  child: Text(onDoneText ?? 'Done'),
-                ),
-              ]
-            : actions);
+      title: Text(title),
+      content: child ?? Text(content ?? ''),
+      actions: autoImplyActions
+          ? <Widget>[
+              TextButton(
+                onPressed: onCancel ?? () {},
+                child: Text(onCancelText ?? 'Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: onDone ?? () {},
+                child: Text(onDoneText ?? 'Done'),
+              ),
+            ]
+          : actions,
+    );
   }
 }

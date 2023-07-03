@@ -49,14 +49,19 @@ class AuthtScreenState extends State<AuthtScreen> {
       if (state is ErrorAuthtState) {
         OverlayService.closeAlert();
         OverlayService.showAlert(
+            child: null,
             onDone: () {
-              OverlayService.cancelFunc!.call();
+              OverlayService.closeAlert();
             },
             onCancel: () {
-              OverlayService.cancelFunc!.call();
+              OverlayService.closeAlert();
             },
             title: 'Autorization Error',
-            content: state.errorMessage);
+            content: state.errorMessage,
+            actions: null,
+            autoImplyActions: true,
+            onCancelText: 'Cancel',
+            onDoneText: 'Done');
       }
 
       if (state is AuthDoneState) {

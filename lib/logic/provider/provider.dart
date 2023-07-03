@@ -41,18 +41,23 @@ class Provider {
     }
   }
 
-  Future<List<CustomerDataModel>?> fetchData() async {
+  Future<List<CustomerDataModel>?> fetchAllCustumersData() async {
     try {
       var url = Uri.parse(
           '${Constants.BASE_URL}${Constants.endPoints['get_costumers']}');
+
       var headers = {
         'Authorization': 'Bearer ${await getToken()}',
         'Content-Type': 'application/json'
       };
-      var response = await fetcher.get(url, headers: headers);
+      var response = await fetcher.get(
+        url,
+        headers: headers,
+      );
       showMessage(msg: 'Response Code: ${response.statusCode}');
       showMessage(msg: 'Response Uri: ${response.request?.url}');
       showMessage(msg: response.body.toString());
+      if (jsonDecode(response.body).runtimeType != Map<String, dynamic>) {}
       List<CustomerDataModel> data =
           dashBoardDataModelFromJson((response.body));
       return data;
@@ -62,11 +67,37 @@ class Provider {
     }
   }
 
-  Future<List<CustomerDataModel>?> searchData(
-      {required String businessName}) async {
+  Future<CustomerDataModel?> fetchSingleCustumersData(
+      {String? query}) async {
     try {
-      var url =
-          Uri.parse('${Constants.BASE_URL}${Constants.endPoints['search']}');
+      var url = Uri.parse(
+          '${Constants.BASE_URL}${Constants.endPoints['get_costumers']}${getQuery(query: query)}');
+
+      var headers = {
+        'Authorization': 'Bearer ${await getToken()}',
+        'Content-Type': 'application/json'
+      };
+      var response = await fetcher.get(
+        url,
+        headers: headers,
+      );
+      showMessage(msg: 'Response Code: ${response.statusCode}');
+      showMessage(msg: 'Response Uri: ${response.request?.url}');
+      showMessage(msg: response.body.toString());
+      if (jsonDecode(response.body).runtimeType != Map<String, dynamic>) {}
+      CustomerDataModel data =
+          CustomerDataModel.fromJson(jsonDecode(response.body));
+      return data;
+    } catch (e, s) {
+      developer.log(e.toString(), stackTrace: s, name: 'Load Data Error');
+      return null;
+    }
+  }
+
+  Future<List<CustomerDataModel>?> searchData({String? businessName}) async {
+    try {
+      var url = Uri.parse(
+          '${Constants.BASE_URL}${Constants.endPoints['search']}/?$businessName');
       var headers = {
         'Authorization': 'Bearer ${await getToken()}',
         'Content-Type': 'application/json'
@@ -127,6 +158,11 @@ class Provider {
           stackTrace: s, name: 'Search By Business Data Error');
       return null;
     }
+  }
+
+  /// get query String
+  String getQuery({String? query}) {
+    return (query != null) ? ('/$query') : '';
   }
 
   /// save bearer token

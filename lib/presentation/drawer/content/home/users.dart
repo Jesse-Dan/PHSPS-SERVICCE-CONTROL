@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phsps_api_work/global/constants.dart';
+import 'package:phsps_api_work/presentation/drawer/content/home/content/query_data.dart';
 import 'package:phsps_api_work/presentation/widgets/data_table.dart';
 
 import '../../../../logic/bloc/home_page_bloc/home_bloc.dart';
@@ -37,27 +38,26 @@ class _UsersState extends State<Users> {
 
   void _load() {
     BlocProvider.of<HomeBloc>(context)
-        .add(LoadMainEvent(RepositoryProvider.of<Repository>(context)));
+        .add(CostumerEvent(RepositoryProvider.of<Repository>(context)));
   }
 
   Widget _loadedStateView({required HomeState state}) {
-    bool fetched = state is HomeDoneState;
+    bool fetched = state is CostumerDone;
+    bool fetchedSingle = state is SingleCostumerDone;
     bool loading = state is HomeLoadingState;
     bool initial = state is HomeInitState;
     bool error = state is ErrorHomeState;
 
     if (fetched) {
       return TableWidget(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: Constants.kdefaultpadding),
-            child: TextButton.icon(
-              onPressed: () {},
-              label: const Text('Query'),
-              icon: const Icon(Icons.search_rounded),
-            ),
-          )
-        ],
+        actions: Row(children: [
+          TextButton(
+              onPressed: () {
+                QueryData.showOptions(context: context);
+              },
+              child: const Text('Query')),
+         
+        ]),
         title: 'All Custumers',
         row: List.generate(state.user!.length,
             (index) => recentFileDataRow(user: state.user![index])),
@@ -67,24 +67,60 @@ class _UsersState extends State<Users> {
           DataColumn(label: Text('Deployment officer'.toUpperCase()))
         ],
       );
+    } else if (fetchedSingle) {
+      return TableWidget(
+        actions:  Row(children: [
+          TextButton(
+              onPressed: () {
+                QueryData.showOptions(context: context);
+              },
+              child: const Text('Query')),
+          TextButton(
+              onPressed: () {
+                BlocProvider.of<HomeBloc>(context).add(
+                    CostumerEvent(RepositoryProvider.of<Repository>(context)));
+              },
+              child: const Text('Refresh'))
+        ]),
+        title: 'All Custumers',
+        row: List.generate(1, (index) => recentFileDataRow(user: state.user)),
+        columns: [
+          DataColumn(label: Text('id'.toUpperCase())),
+          DataColumn(label: Text('Organization Name'.toUpperCase())),
+          DataColumn(label: Text('Deployment officer'.toUpperCase()))
+        ],
+      );
+    } else {
+      return TableWidget(
+        actions: const Row(children: [
+          // TextButton(
+          //     onPressed: () {
+          //       QueryData.showOptions(context: context);
+          //     },
+          //     child: const Text('Query')),
+          // TextButton(
+          //     onPressed: () {
+          //       BlocProvider.of<HomeBloc>(context).add(
+          //           CostumerEvent(RepositoryProvider.of<Repository>(context)));
+          //     },
+              // child: const Text('Refresh'))
+        ]),
+        title: 'All Customers',
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: Constants.kdefaultpadding * 6,
+              bottom: Constants.kdefaultpadding * 6),
+          child: Center(
+              child: initial
+                  ? const Text('Analyzing System...')
+                  : loading
+                      ? const CircularProgressIndicator()
+                      : error
+                          ? Text(state.errorMessage!)
+                          : null),
+        ),
+      );
     }
-
-    return TableWidget(
-      title: 'All Customers',
-      child: Padding(
-        padding: const EdgeInsets.only(
-            top: Constants.kdefaultpadding * 6,
-            bottom: Constants.kdefaultpadding * 6),
-        child: Center(
-            child: initial
-                ? const Text('Analyzing System...')
-                : loading
-                    ? const CircularProgressIndicator()
-                    : error
-                        ? Text(state.errorMessage!)
-                        : null),
-      ),
-    );
   }
 
   DataRow recentFileDataRow({required CustomerDataModel user}) {

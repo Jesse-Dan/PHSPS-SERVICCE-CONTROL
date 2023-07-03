@@ -10,6 +10,7 @@ import 'package:phsps_api_work/presentation/widgets/overlay_manager.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 import '../settings/settings_controller.dart';
+import '../widgets/fab.dart';
 import 'content/home/users.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -45,7 +46,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 shrinkIcon: Icons.arrow_right_rounded,
                 expandIcon: Icons.arrow_left_rounded,
                 onToggle: () => BlocProvider.of<HomeBloc>(context).add(
-                    LoadMainEvent(RepositoryProvider.of<Repository>(context)))),
+                    CostumerEvent(RepositoryProvider.of<Repository>(context)))),
             initiallyExpanded: false,
             selectedIndex: selectedIndex,
             header: const SideNavigationBarHeader(
@@ -89,6 +90,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onDoneText: 'Log out',
                   onCancelText: 'cancel',
                   actions: null,
+                  child: null,
                 ),
                 leading: Icon(Icons.logout),
                 title: Text('Logout'),
@@ -102,6 +104,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           )
         ],
       ),
+      floatingActionButton: FancyFab(),
     );
   }
 }

@@ -18,6 +18,7 @@ class OverlayService {
     String? onCancelText,
   }) {
     OverlayManager.show(
+      cancelFunc: cancelFunc,
       child: ReusableAlertDialog(
         title: title,
         content: content,
