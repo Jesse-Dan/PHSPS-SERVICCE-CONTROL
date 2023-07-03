@@ -6,7 +6,7 @@ import 'package:phsps_api_work/presentation/widgets/alert_dialogue.dart';
 
 class OverlayService {
   static void Function()? cancelFunc;
-  static void showToast({
+  static void showAlert({
     required String title,
     String? content,
     VoidCallback? onDone,
@@ -37,7 +37,7 @@ class OverlayService {
         child: const CircularProgressIndicator(), cancelFunc: cancelFunc);
   }
 
-  OverlayService.closeToasts() {
+  OverlayService.closeAlert() {
     OverlayManager.dismissOverlay();
   }
 }

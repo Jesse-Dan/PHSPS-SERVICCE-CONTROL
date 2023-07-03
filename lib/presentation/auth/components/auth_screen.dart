@@ -43,12 +43,12 @@ class AuthtScreenState extends State<AuthtScreen> {
       }
 
       if (state is! AuthLoadingState) {
-        OverlayService.closeToasts();
+        OverlayService.closeAlert();
       }
 
       if (state is ErrorAuthtState) {
-        OverlayService.closeToasts();
-        OverlayService.showToast(
+        OverlayService.closeAlert();
+        OverlayService.showAlert(
             onDone: () {
               OverlayService.cancelFunc!.call();
             },

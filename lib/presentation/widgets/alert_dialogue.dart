@@ -15,7 +15,7 @@ class ReusableAlertDialog extends StatelessWidget {
   final bool autoImplyActions;
   final List<Widget>? actions;
 
-  const ReusableAlertDialog({
+  ReusableAlertDialog({
     super.key,
     required this.title,
     required this.content,
@@ -26,8 +26,16 @@ class ReusableAlertDialog extends StatelessWidget {
     required this.actions,
     required this.onDoneText,
     required this.onCancelText,
-  });
-
+  }) {
+    if (autoImplyActions && actions != null) {
+      throw Exception(
+          'can\'t use autoImplyActions and actions together, if autoImplyActions is true actions must be null');
+    } else if (child != null && content!.isNotEmpty) {
+      throw Exception(
+          'can\'t use child and content together, if child is not null content must be [content = '
+          ']');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
