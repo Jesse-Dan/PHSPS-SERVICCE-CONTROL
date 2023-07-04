@@ -127,7 +127,7 @@ class SumEvent extends HomeEvent {
       {HomeState? currentState, HomeBloc? bloc}) async* {
     try {
       yield const HomeLoadingState();
-      var data = await authRepository.fetchData();
+      var data = await authRepository.searchSumData(month: query);
       if (data == null) {
         yield ErrorHomeState('An unknown error occured'.toString());
       }

@@ -58,8 +58,7 @@ class Provider {
       showMessage(msg: 'Response Uri: ${response.request?.url}');
       showMessage(msg: response.body.toString());
       if (jsonDecode(response.body).runtimeType != Map<String, dynamic>) {}
-      List<CustomerDataModel> data =
-          dashBoardDataModelFromJson((response.body));
+      List<CustomerDataModel> data = custumerDataModelFromJson((response.body));
       return data;
     } catch (e, s) {
       developer.log(e.toString(), stackTrace: s, name: 'Load Data Error');
@@ -105,8 +104,7 @@ class Provider {
       showMessage(msg: 'Response Code: ${response.statusCode}');
       showMessage(msg: 'Response Uri: ${response.request?.url}');
       showMessage(msg: response.body.toString());
-      List<CustomerDataModel> data =
-          dashBoardDataModelFromJson((response.body));
+      List<CustomerDataModel> data = custumerDataModelFromJson((response.body));
       return data;
     } catch (e, s) {
       developer.log(e.toString(),
@@ -115,7 +113,8 @@ class Provider {
     }
   }
 
-  Future<List<CustomerDataModel>?> monthsSearch({required String month}) async {
+  Future<List<CustomerDataModel>?> monthsSearch(
+      {required String? month}) async {
     try {
       var url = Uri.parse(
           '${Constants.BASE_URL}${Constants.endPoints['get_monthly_subs']}${getQuery(query: month)}');
@@ -127,8 +126,7 @@ class Provider {
       showMessage(msg: 'Response Code: ${response.statusCode}');
       showMessage(msg: 'Response Uri: ${response.request?.url}');
       showMessage(msg: response.body.toString());
-      List<CustomerDataModel> data =
-          dashBoardDataModelFromJson((response.body));
+      List<CustomerDataModel> data = custumerDataModelFromJson((response.body));
       return data;
     } catch (e, s) {
       developer.log(e.toString(),
@@ -137,10 +135,10 @@ class Provider {
     }
   }
 
-  Future<List<CustomerDataModel>?> sumsSearch({required String month}) async {
+  Future<List<CustomerDataModel>?> sumsSearch({required String? month}) async {
     try {
       var url = Uri.parse(
-          '${Constants.BASE_URL}${Constants.endPoints['get_total_monthly_subs_annully']}');
+          '${Constants.BASE_URL}${Constants.endPoints['get_total_monthly_subs_annully']}${getQuery(query: month)}');
       var headers = {
         'Authorization': 'Bearer ${await getToken()}',
         'Content-Type': 'application/json'
@@ -149,8 +147,7 @@ class Provider {
       showMessage(msg: 'Response Code: ${response.statusCode}');
       showMessage(msg: 'Response Uri: ${response.request?.url}');
       showMessage(msg: response.body.toString());
-      List<CustomerDataModel> data =
-          dashBoardDataModelFromJson((response.body));
+      List<CustomerDataModel> data = custumerDataModelFromJson((response.body));
       return data;
     } catch (e, s) {
       developer.log(e.toString(),

@@ -77,9 +77,9 @@ class Repository {
     }
   }
 
-  Future<List<CustomerDataModel>?> searchSumData() async {
+  Future<List<CustomerDataModel>?> searchSumData({String? month}) async {
     try {
-      var data = await authProvider.fetchAllCustumersData();
+      var data = await authProvider.sumsSearch(month: month);
       showMessage(msg: data.toString());
       return data;
     } catch (e) {
