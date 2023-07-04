@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:phsps_api_work/logic/bloc/home_page_bloc/home_event.dart';
 import 'package:phsps_api_work/presentation/widgets/overlay_manager.dart';
 
@@ -13,6 +18,7 @@ class QueryData {
   static const shp_1 = 'Query by Business Name';
   static const shp_2 = 'Query by Month';
   static const shp_3 = 'Query by Sum';
+  static String? month;
 
   static showOptions({Widget? icon, required BuildContext context}) {
     OverlayService.showAlert(
@@ -73,6 +79,9 @@ class QueryData {
                   OverlayService.closeAlert();
                 },
                 onDone: () {
+                  BlocProvider.of<HomeBloc>(context).add(SearchEvent(
+                      RepositoryProvider.of<Repository>(context),
+                      query: searchParamValController.text));
                   searchParamValController.clear();
                   OverlayService.closeAlert();
                 },
@@ -110,6 +119,19 @@ class QueryData {
                       },
                       title: shp_2,
                       child: TextFormField(
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900, 9, 7, 17, 30),
+                              lastDate: DateTime.now());
+                          var month = DateFormat('MMMM').format(pickedDate!);
+                          // log(month);
+                          BlocProvider.of<HomeBloc>(context).add(MonthEvent(
+                              RepositoryProvider.of<Repository>(context),
+                              query: month));
+                        },
+                        readOnly: true,
                         controller: searchParamValController,
                         obscureText: false,
                         validator: (value) {

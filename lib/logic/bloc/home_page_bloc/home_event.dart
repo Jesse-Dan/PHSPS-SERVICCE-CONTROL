@@ -64,14 +64,16 @@ class SingleCostumerEvent extends HomeEvent {
 
 class SearchEvent extends HomeEvent {
   final Repository authRepository;
-  SearchEvent(this.authRepository);
+  final String? query;
+
+  SearchEvent(this.authRepository, {this.query});
 
   @override
   Stream<HomeState> applyAsync(
       {HomeState? currentState, HomeBloc? bloc}) async* {
     try {
       yield const HomeLoadingState();
-      var data = await authRepository.fetchData();
+      var data = await authRepository.searchData(query: query);
       if (data == null) {
         yield ErrorHomeState('An unknown error occured'.toString());
       }
@@ -89,14 +91,16 @@ class SearchEvent extends HomeEvent {
 
 class MonthEvent extends HomeEvent {
   final Repository authRepository;
-  MonthEvent(this.authRepository);
+  final String? query;
+
+  MonthEvent(this.authRepository, {this.query});
 
   @override
   Stream<HomeState> applyAsync(
       {HomeState? currentState, HomeBloc? bloc}) async* {
     try {
       yield const HomeLoadingState();
-      var data = await authRepository.fetchData();
+      var data = await authRepository.searchMonthData(month: query);
       if (data == null) {
         yield ErrorHomeState('An unknown error occured'.toString());
       }
@@ -114,7 +118,9 @@ class MonthEvent extends HomeEvent {
 
 class SumEvent extends HomeEvent {
   final Repository authRepository;
-  SumEvent(this.authRepository);
+  final String? query;
+
+  SumEvent(this.authRepository, {this.query});
 
   @override
   Stream<HomeState> applyAsync(

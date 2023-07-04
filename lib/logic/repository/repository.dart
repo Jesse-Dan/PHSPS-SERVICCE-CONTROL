@@ -66,9 +66,9 @@ class Repository {
     }
   }
 
-  Future<List<CustomerDataModel>?> searchMonthData() async {
+  Future<List<CustomerDataModel>?> searchMonthData({String? month}) async {
     try {
-      var data = await authProvider.fetchAllCustumersData();
+      var data = await authProvider.monthsSearch(month: month!);
       showMessage(msg: data.toString());
       return data;
     } catch (e) {

@@ -67,8 +67,7 @@ class Provider {
     }
   }
 
-  Future<CustomerDataModel?> fetchSingleCustumersData(
-      {String? query}) async {
+  Future<CustomerDataModel?> fetchSingleCustumersData({String? query}) async {
     try {
       var url = Uri.parse(
           '${Constants.BASE_URL}${Constants.endPoints['get_costumers']}${getQuery(query: query)}');
@@ -97,7 +96,7 @@ class Provider {
   Future<List<CustomerDataModel>?> searchData({String? businessName}) async {
     try {
       var url = Uri.parse(
-          '${Constants.BASE_URL}${Constants.endPoints['search']}/?$businessName');
+          '${Constants.BASE_URL}${Constants.endPoints['search']}${getQuery(query: businessName)}');
       var headers = {
         'Authorization': 'Bearer ${await getToken()}',
         'Content-Type': 'application/json'
@@ -119,7 +118,7 @@ class Provider {
   Future<List<CustomerDataModel>?> monthsSearch({required String month}) async {
     try {
       var url = Uri.parse(
-          '${Constants.BASE_URL}${Constants.endPoints['get_monthly_subs']}');
+          '${Constants.BASE_URL}${Constants.endPoints['get_monthly_subs']}${getQuery(query: month)}');
       var headers = {
         'Authorization': 'Bearer ${await getToken()}',
         'Content-Type': 'application/json'
